@@ -2,11 +2,11 @@ package config
 
 import (
 	"fmt"
-	"os"
-	"golang-rest-api-gin-gorm-mysql-jwt/entity"
 	"github.com/joho/godotenv"
+	"golang-rest-api-gin-gorm-mysql-jwt/entity"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 )
 
 func SetupDatabaseConnection() *gorm.DB {
@@ -22,11 +22,19 @@ func SetupDatabaseConnection() *gorm.DB {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if (err != nil) {
+	if err != nil {
 		panic("Failed to create a connection to database")
 	}
 
 	db.AutoMigrate(&entity.Book{}, &entity.User{})
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic("Failed to get DB")
+	}
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(10)
+
 	return db
 }
 
