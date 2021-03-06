@@ -10,6 +10,9 @@ build docker images :
 run docker :
 - docker run -p 8080 -d application-name
 
+update swagger api :
+- swag init -g server.go
+
 api register user :
 curl --location --request POST '127.0.0.1:8080/api/auth/register' \
 --header 'Content-Type: application/json' \
