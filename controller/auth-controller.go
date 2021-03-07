@@ -22,6 +22,15 @@ func NewAuthController(authService service.AuthService, jwtService service.JWTSe
 	}
 }
 
+// @Summary Login
+// @Description Login
+// @Accept  json
+// @Produce  json
+// @Param user body dto.LoginDTO true "login user"
+// @Success 200 {array} helper.Response
+// @Header 200 {string} Token "qwerty"
+// @Failure 400,404 {object} helper.Response
+// @Router /api/auth/login [post]
 func (c *authController) Login(ctx *gin.Context) {
 	var loginDTO dto.LoginDTO
 	errDTO := ctx.ShouldBind(&loginDTO)
